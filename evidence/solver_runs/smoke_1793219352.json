@@ -1,0 +1,622 @@
+{
+  "milp": {
+    "problem_class": "MILP",
+    "execution_mode": "local",
+    "job_id": null,
+    "problem_id": null,
+    "solver_time_s": 0.0038931,
+    "compute_time_s": 0.2576742,
+    "solve_info": {
+      "problem_class": "MILP",
+      "execution_mode": "local",
+      "provider": "qpiai-opt-local",
+      "solver": "HiGHS",
+      "method": "mixed-integer-linear-programming",
+      "termination": "optimal",
+      "has_usable_solution": true,
+      "solution_feasible": true,
+      "optimality_proven": true,
+      "guarantee": "global_optimum",
+      "source_objective": 700.0,
+      "transformed": true,
+      "settings": {}
+    },
+    "sense": "MIN",
+    "status": "optimal",
+    "model_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "objective": 700.0,
+    "num_nodes": 0,
+    "best_bound": 700.0,
+    "optimality_gap": 0.0,
+    "iteration_count": 0,
+    "error_message": null,
+    "solution": {
+      "x_B1_F1": 1.0,
+      "x_B1_F2": 0.0,
+      "x_B2_F1": 0.0,
+      "x_B2_F2": 1.0
+    },
+    "dual_values": null,
+    "reduced_costs": null,
+    "basis": null,
+    "ranging": null,
+    "solution_pool": null,
+    "iis": null
+  },
+  "qaoa": {
+    "problem_class": "QUBO",
+    "execution_mode": "local",
+    "job_id": null,
+    "problem_id": null,
+    "solver_time_s": 3.7011978999944404,
+    "compute_time_s": 4.2936765,
+    "solve_info": {
+      "problem_class": "QUBO",
+      "execution_mode": "local",
+      "provider": "qpiai-quantum",
+      "solver": "QAOA",
+      "method": "sampled variational optimization",
+      "termination": "completed",
+      "has_usable_solution": true,
+      "solution_feasible": true,
+      "optimality_proven": false,
+      "guarantee": "best_found",
+      "source_objective": 700.0,
+      "transformed": true,
+      "settings": {
+        "shots": 1024,
+        "reps": 2,
+        "parameters": 4
+      }
+    },
+    "objective": 700.0,
+    "variable_assignment": {
+      "x_B1_F1": 1,
+      "x_B1_F2": 0,
+      "x_B2_F1": 0,
+      "x_B2_F2": 1
+    },
+    "eigenvalue": null,
+    "quantum": {
+      "algorithm": "QAOA",
+      "backend": "QpiAI-QSV-Local",
+      "shots": 1024,
+      "optimizer": "cobyla",
+      "evaluations": 17,
+      "iterations": 18,
+      "optimized_parameters": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "objective_history": [
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625,
+        -1024.8681640625
+      ],
+      "parameter_history": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.005000000000000001,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.005000000000000001,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.005000000000000001,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.005000000000000001
+        ],
+        [
+          5.0000000000000016e-05,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.0000000000000016e-05,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.0000000000000016e-05,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          5.0000000000000016e-05
+        ],
+        [
+          5e-07,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5e-07,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5e-07,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          5e-07
+        ]
+      ],
+      "counts": {
+        "1010": 68,
+        "1110": 62,
+        "1100": 74,
+        "0011": 63,
+        "0100": 68,
+        "1101": 60,
+        "0000": 66,
+        "0111": 63,
+        "1000": 64,
+        "1111": 61,
+        "1001": 66,
+        "0010": 77,
+        "1011": 52,
+        "0101": 57,
+        "0001": 59,
+        "0110": 64
+      },
+      "candidates": [
+        {
+          "bitstring": "0000",
+          "count": 1188,
+          "probability": 0.064453125,
+          "internal_energy": 4102.0,
+          "objective": 0.0,
+          "feasible": false,
+          "solution": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 0,
+            "x_B2_F1": 0,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0001",
+          "count": 1062,
+          "probability": 0.0576171875,
+          "internal_energy": 2451.0,
+          "objective": 400.0,
+          "feasible": false,
+          "solution": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 0,
+            "x_B2_F1": 0,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0010",
+          "count": 1386,
+          "probability": 0.0751953125,
+          "internal_energy": 2701.0,
+          "objective": 650.0,
+          "feasible": false,
+          "solution": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 1,
+            "x_B2_F1": 0,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0011",
+          "count": 1134,
+          "probability": 0.0615234375,
+          "internal_energy": 5152.0,
+          "objective": 1050.0,
+          "feasible": false,
+          "solution": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 1,
+            "x_B2_F1": 0,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0100",
+          "count": 1224,
+          "probability": 0.06640625,
+          "internal_energy": 2751.0,
+          "objective": 700.0,
+          "feasible": false,
+          "solution": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 0,
+            "x_B2_F1": 1,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0101",
+          "count": 1026,
+          "probability": 0.0556640625,
+          "internal_energy": 1100.0,
+          "objective": 1100.0,
+          "feasible": true,
+          "solution": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 0,
+            "x_B2_F1": 1,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0110",
+          "count": 1152,
+          "probability": 0.0625,
+          "internal_energy": 1350.0,
+          "objective": 1350.0,
+          "feasible": true,
+          "solution": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 1,
+            "x_B2_F1": 1,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "0111",
+          "count": 1134,
+          "probability": 0.0615234375,
+          "internal_energy": 3801.0,
+          "objective": 1750.0,
+          "feasible": false,
+          "solution": [
+            1,
+            1,
+            1,
+            0
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 1,
+            "x_B2_F1": 1,
+            "x_B2_F2": 0
+          }
+        },
+        {
+          "bitstring": "1000",
+          "count": 1152,
+          "probability": 0.0625,
+          "internal_energy": 2351.0,
+          "objective": 300.0,
+          "feasible": false,
+          "solution": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 0,
+            "x_B2_F1": 0,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1001",
+          "count": 1188,
+          "probability": 0.064453125,
+          "internal_energy": 700.0,
+          "objective": 700.0,
+          "feasible": true,
+          "solution": [
+            1,
+            0,
+            0,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 0,
+            "x_B2_F1": 0,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1010",
+          "count": 1224,
+          "probability": 0.06640625,
+          "internal_energy": 950.0,
+          "objective": 950.0,
+          "feasible": true,
+          "solution": [
+            0,
+            1,
+            0,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 1,
+            "x_B2_F1": 0,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1011",
+          "count": 936,
+          "probability": 0.05078125,
+          "internal_energy": 3401.0,
+          "objective": 1350.0,
+          "feasible": false,
+          "solution": [
+            1,
+            1,
+            0,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 1,
+            "x_B2_F1": 0,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1100",
+          "count": 1332,
+          "probability": 0.072265625,
+          "internal_energy": 5102.0,
+          "objective": 1000.0,
+          "feasible": false,
+          "solution": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 0,
+            "x_B2_F1": 1,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1101",
+          "count": 1080,
+          "probability": 0.05859375,
+          "internal_energy": 3451.0,
+          "objective": 1400.0,
+          "feasible": false,
+          "solution": [
+            1,
+            0,
+            1,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 0,
+            "x_B2_F1": 1,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1110",
+          "count": 1116,
+          "probability": 0.060546875,
+          "internal_energy": 3701.0,
+          "objective": 1650.0,
+          "feasible": false,
+          "solution": [
+            0,
+            1,
+            1,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 0,
+            "x_B1_F2": 1,
+            "x_B2_F1": 1,
+            "x_B2_F2": 1
+          }
+        },
+        {
+          "bitstring": "1111",
+          "count": 1098,
+          "probability": 0.0595703125,
+          "internal_energy": 6152.0,
+          "objective": 2050.0,
+          "feasible": false,
+          "solution": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "variable_assignment": {
+            "x_B1_F1": 1,
+            "x_B1_F2": 1,
+            "x_B2_F1": 1,
+            "x_B2_F2": 1
+          }
+        }
+      ],
+      "job_ids": [],
+      "logical_circuit": {
+        "depth": 7,
+        "size": 28,
+        "gate_counts": {
+          "H": 4,
+          "RZ": 8,
+          "RZZ": 4,
+          "RX": 8,
+          "MEASURE": 4
+        }
+      },
+      "qpu_metadata": [],
+      "transformations": [
+        {
+          "stage": "objective_normalization",
+          "source_sense": "MIN",
+          "target_sense": "MIN",
+          "sign": 1.0,
+          "source_offset": 0.0
+        },
+        {
+          "stage": "constraint_encoding",
+          "constraint": "assign_B1",
+          "rewrite": "generic_exact_penalty",
+          "penalty_weight": 2051.0,
+          "minimum_positive_penalty": 1.0,
+          "auxiliary_variables": []
+        },
+        {
+          "stage": "constraint_encoding",
+          "constraint": "assign_B2",
+          "rewrite": "generic_exact_penalty",
+          "penalty_weight": 2051.0,
+          "minimum_positive_penalty": 1.0,
+          "auxiliary_variables": []
+        },
+        {
+          "transformation": "qubo_to_ising",
+          "substitution": "x = (1 + s) / 2",
+          "original_sense": "MIN"
+        },
+        {
+          "transformation": "ising_to_qubit_hamiltonian",
+          "substitution": "z = -s",
+          "exact_terms": "identity, Z, and ZZ"
+        }
+      ],
+      "algorithm_metadata": {
+        "reps": 2,
+        "parameterization": "standard",
+        "parameter_order": "gamma[0:p], beta[0:p]",
+        "mixer": "x",
+        "aggregation": "expectation",
+        "optimized_aggregate": -1024.8681640625,
+        "optimization_offset": 4102.0,
+        "candidate_distribution": "all variational and final measurement evaluations"
+      }
+    },
+    "solution": [
+      1,
+      0,
+      0,
+      1
+    ]
+  }
+}
