@@ -1,0 +1,284 @@
+{
+  "scenario_name": "Bengaluru demo allocation (illustrative data)",
+  "scenario_hash": "1564cf9f4551bf4309b8834db6a6eefea9cb7ac01255b6a05ce818a79c509974",
+  "as_of": "2026-10-28",
+  "excluded_pairs": [
+    {
+      "batch": "EW-2026-0101",
+      "facility": "F3",
+      "reasons": [
+        "licence expired or missing"
+      ]
+    },
+    {
+      "batch": "EW-2026-0101",
+      "facility": "F4",
+      "reasons": [
+        "not authorised for IT"
+      ]
+    },
+    {
+      "batch": "EW-2026-0102",
+      "facility": "F2",
+      "reasons": [
+        "not authorised for TELECOM"
+      ]
+    },
+    {
+      "batch": "EW-2026-0102",
+      "facility": "F3",
+      "reasons": [
+        "licence expired or missing"
+      ]
+    },
+    {
+      "batch": "EW-2026-0103",
+      "facility": "F3",
+      "reasons": [
+        "licence expired or missing"
+      ]
+    },
+    {
+      "batch": "EW-2026-0104",
+      "facility": "F3",
+      "reasons": [
+        "licence expired or missing"
+      ]
+    },
+    {
+      "batch": "EW-2026-0104",
+      "facility": "F4",
+      "reasons": [
+        "not authorised for IT"
+      ]
+    },
+    {
+      "batch": "EW-2026-0105",
+      "facility": "F3",
+      "reasons": [
+        "licence expired or missing"
+      ]
+    },
+    {
+      "batch": "EW-2026-0106",
+      "facility": "F2",
+      "reasons": [
+        "not authorised for TELECOM"
+      ]
+    },
+    {
+      "batch": "EW-2026-0106",
+      "facility": "F3",
+      "reasons": [
+        "licence expired or missing"
+      ]
+    }
+  ],
+  "cost_matrix_inr": [
+    {
+      "batch": "EW-2026-0101",
+      "facility": "F1",
+      "cost": 3300.0
+    },
+    {
+      "batch": "EW-2026-0101",
+      "facility": "F2",
+      "cost": 2875.0
+    },
+    {
+      "batch": "EW-2026-0102",
+      "facility": "F1",
+      "cost": 3040.0
+    },
+    {
+      "batch": "EW-2026-0102",
+      "facility": "F4",
+      "cost": 3000.0
+    },
+    {
+      "batch": "EW-2026-0103",
+      "facility": "F1",
+      "cost": 2520.0
+    },
+    {
+      "batch": "EW-2026-0103",
+      "facility": "F2",
+      "cost": 2812.5
+    },
+    {
+      "batch": "EW-2026-0103",
+      "facility": "F4",
+      "cost": 2700.0
+    },
+    {
+      "batch": "EW-2026-0104",
+      "facility": "F1",
+      "cost": 4800.0
+    },
+    {
+      "batch": "EW-2026-0104",
+      "facility": "F2",
+      "cost": 2850.0
+    },
+    {
+      "batch": "EW-2026-0105",
+      "facility": "F1",
+      "cost": 2450.0
+    },
+    {
+      "batch": "EW-2026-0105",
+      "facility": "F2",
+      "cost": 1837.5
+    },
+    {
+      "batch": "EW-2026-0105",
+      "facility": "F4",
+      "cost": 1575.0
+    },
+    {
+      "batch": "EW-2026-0106",
+      "facility": "F1",
+      "cost": 2700.0
+    },
+    {
+      "batch": "EW-2026-0106",
+      "facility": "F4",
+      "cost": 1800.0
+    }
+  ],
+  "solver": {
+    "product": "QpiAI Opt",
+    "execution_mode": "local",
+    "problem_class": "MILP",
+    "objective": 15307.5,
+    "method": "mixed-integer-linear-programming",
+    "termination": "optimal",
+    "guarantee": "global_optimum",
+    "job_id": null,
+    "problem_id": null,
+    "solver_time_s": 0.0536319,
+    "wall_time_s": 0.884,
+    "raw_result": {
+      "problem_class": "MILP",
+      "execution_mode": "local",
+      "job_id": null,
+      "problem_id": null,
+      "solver_time_s": 0.0536319,
+      "compute_time_s": 0.8839499,
+      "solve_info": {
+        "problem_class": "MILP",
+        "execution_mode": "local",
+        "provider": "qpiai-opt-local",
+        "solver": "HiGHS",
+        "method": "mixed-integer-linear-programming",
+        "termination": "optimal",
+        "has_usable_solution": true,
+        "solution_feasible": true,
+        "optimality_proven": true,
+        "guarantee": "global_optimum",
+        "source_objective": 15307.5,
+        "transformed": true,
+        "settings": {}
+      },
+      "sense": "MIN",
+      "status": "optimal",
+      "model_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 15307.5,
+      "num_nodes": 1,
+      "best_bound": 15307.5,
+      "optimality_gap": 0.0,
+      "iteration_count": 0,
+      "error_message": null,
+      "solution": {
+        "x_0_0": 1.0,
+        "x_0_1": 0.0,
+        "x_1_0": 0.0,
+        "x_1_3": 1.0,
+        "x_2_0": 1.0,
+        "x_2_1": 0.0,
+        "x_2_3": 0.0,
+        "x_3_0": 0.0,
+        "x_3_1": 1.0,
+        "x_4_0": 0.0,
+        "x_4_1": 1.0,
+        "x_4_3": 0.0,
+        "x_5_0": 0.0,
+        "x_5_3": 1.0
+      },
+      "dual_values": null,
+      "reduced_costs": null,
+      "basis": null,
+      "ranging": null,
+      "solution_pool": null,
+      "iis": null
+    }
+  },
+  "optimized": {
+    "plan": {
+      "EW-2026-0101": [
+        "F1"
+      ],
+      "EW-2026-0102": [
+        "F4"
+      ],
+      "EW-2026-0103": [
+        "F1"
+      ],
+      "EW-2026-0104": [
+        "F2"
+      ],
+      "EW-2026-0105": [
+        "F2"
+      ],
+      "EW-2026-0106": [
+        "F4"
+      ]
+    },
+    "feasible": true,
+    "violations": [],
+    "assigned": 6,
+    "total_batches": 6,
+    "total_cost_inr": 15307.5,
+    "load_kg": {
+      "F1": 950.0,
+      "F2": 950.0,
+      "F3": 0.0,
+      "F4": 700.0
+    }
+  },
+  "baseline_nearest": {
+    "plan": {
+      "EW-2026-0101": [
+        "F1"
+      ],
+      "EW-2026-0102": [
+        "F1"
+      ],
+      "EW-2026-0103": [
+        "F2"
+      ],
+      "EW-2026-0105": [
+        "F2"
+      ],
+      "EW-2026-0106": [
+        "F4"
+      ]
+    },
+    "feasible": false,
+    "violations": [
+      "EW-2026-0104: assigned to 0 facilities (must be exactly 1)"
+    ],
+    "assigned": 5,
+    "total_batches": 6,
+    "total_cost_inr": 12790.0,
+    "load_kg": {
+      "F1": 900.0,
+      "F2": 800.0,
+      "F3": 0.0,
+      "F4": 300.0
+    }
+  },
+  "objective_matches_independent_cost": true,
+  "cost_improvement_pct": null,
+  "plan_hash": "cd393cec8253d02825ce1e04d0bcd4a0846b2b84be78b5692302cbc965117f0a"
+}

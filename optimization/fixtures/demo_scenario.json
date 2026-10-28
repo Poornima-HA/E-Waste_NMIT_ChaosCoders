@@ -1,0 +1,31 @@
+{
+  "name": "Bengaluru demo allocation (illustrative data)",
+  "as_of": "2026-10-28",
+  "transport_rate_inr_per_kg_km": 0.05,
+  "distances_km": {
+    "CC-A": {"F1": 12, "F2": 35, "F3": 8,  "F4": 50},
+    "CC-B": {"F1": 40, "F2": 15, "F3": 30, "F4": 20}
+  },
+  "facilities": [
+    {"id": "F1", "name": "Recycler Alpha (demo)", "capacity_kg": 1200,
+     "licence_valid_until": "2027-03-31",
+     "processing_inr_per_kg": {"IT": 6, "TELECOM": 7, "CONSUMER": 5}},
+    {"id": "F2", "name": "Recycler Beta (demo)", "capacity_kg": 1000,
+     "licence_valid_until": "2027-06-30",
+     "processing_inr_per_kg": {"IT": 4, "CONSUMER": 4.5}},
+    {"id": "F3", "name": "Recycler Gamma (demo, EXPIRED)", "capacity_kg": 3000,
+     "licence_valid_until": "2026-09-30",
+     "processing_inr_per_kg": {"IT": 3, "TELECOM": 3, "CONSUMER": 3}},
+    {"id": "F4", "name": "Recycler Delta (demo)", "capacity_kg": 900,
+     "licence_valid_until": "2027-01-31",
+     "processing_inr_per_kg": {"TELECOM": 5, "CONSUMER": 3.5}}
+  ],
+  "batches": [
+    {"id": "EW-2026-0101", "source": "CC-A", "category": "IT",       "mass_kg": 500},
+    {"id": "EW-2026-0102", "source": "CC-A", "category": "TELECOM",  "mass_kg": 400},
+    {"id": "EW-2026-0103", "source": "CC-A", "category": "CONSUMER", "mass_kg": 450},
+    {"id": "EW-2026-0104", "source": "CC-B", "category": "IT",       "mass_kg": 600},
+    {"id": "EW-2026-0105", "source": "CC-B", "category": "CONSUMER", "mass_kg": 350},
+    {"id": "EW-2026-0106", "source": "CC-B", "category": "TELECOM",  "mass_kg": 300}
+  ]
+}

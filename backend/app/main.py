@@ -1,7 +1,14 @@
-import hashlib, json
+# --- load .env FIRST (db.py reads DATABASE_URL at import time) ---
+from dotenv import load_dotenv
+load_dotenv()
+
+import hashlib
+import json
+import os
 from contextlib import asynccontextmanager
 from datetime import date, datetime, timedelta
 from decimal import Decimal
+from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI, Depends, HTTPException
@@ -9,18 +16,26 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from qpiai_opt.opt_solvers import Client
 
 from .db import Base, engine, get_db, SessionLocal
-from .models import Facility, Batch, Transfer, AuditEvent, AuditAlert, utcnow
+from .models import (Facility, Batch, Transfer, AuditEvent, AuditAlert,
+                     OptimizationRun, utcnow)
+from .allocation import run_allocation
 
+# ---------- config ----------
 UNIT_TO_G = {"g": Decimal(1), "kg": Decimal(1000), "t": Decimal(1_000_000)}
 RECEIPT_TOLERANCE_PCT = Decimal("0.5")   # demo threshold, not a regulatory standard
 CRITICAL_PCT = Decimal("2.0")
 OVERDUE_HOURS = 24
 GENESIS = "0" * 64
+SCENARIO_PATH = (Path(__file__).resolve().parents[2]
+                 / "optimization" / "fixtures" / "demo_scenario.json")
+
 
 def to_grams(value: Decimal, unit: str) -> int:
     return int((value * UNIT_TO_G[unit]).to_integral_value())
+
 
 # ---------- seed (clearly labelled demo data) ----------
 def seed(db: Session):
@@ -40,6 +55,7 @@ def seed(db: Session):
     ])
     db.commit()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(engine)
@@ -47,14 +63,17 @@ async def lifespan(app: FastAPI):
         seed(db)
     yield
 
-app = FastAPI(title="E-Waste Ledger API", version="0.2.0", lifespan=lifespan)
+
+app = FastAPI(title="E-Waste Ledger API", version="0.3.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"],
                    allow_methods=["*"], allow_headers=["*"])
+
 
 # ---------- schemas ----------
 class Mass(BaseModel):
     value: Decimal = Field(gt=0)
     unit: Literal["g", "kg", "t"] = "kg"
+
 
 class BatchIn(BaseModel):
     id: str = Field(pattern=r"^EW-\d{4}-\d{4}$")
@@ -64,6 +83,7 @@ class BatchIn(BaseModel):
     operator: str
     weighed_at: datetime
 
+
 class TransferIn(BaseModel):
     id: str
     batch_id: str
@@ -71,10 +91,12 @@ class TransferIn(BaseModel):
     mass: Mass
     actor: str
 
+
 class ReceiveIn(BaseModel):
     receiver_id: str
     mass: Mass
     actor: str
+
 
 # ---------- helpers ----------
 def record_event(db: Session, batch_id: str, event_type: str, payload: dict, actor: str):
@@ -92,6 +114,7 @@ def record_event(db: Session, batch_id: str, event_type: str, payload: dict, act
     db.flush()
     return ev
 
+
 def commit_or_409(db: Session):
     try:
         db.commit()
@@ -99,8 +122,10 @@ def commit_or_409(db: Session):
         db.rollback()
         raise HTTPException(409, "Duplicate record rejected by database constraint")
 
+
 def licence_ok(f: Facility) -> bool:
     return f.licence_valid_until is not None and f.licence_valid_until >= date.today()
+
 
 def batch_out(db: Session, b: Batch) -> dict:
     return {
@@ -124,10 +149,12 @@ def batch_out(db: Session, b: Batch) -> dict:
         } for a in db.query(AuditAlert).filter_by(batch_id=b.id)],
     }
 
-# ---------- endpoints ----------
+
+# ---------- health + facilities ----------
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "e-waste-ledger"}
+
 
 @app.get("/api/v1/facilities")
 def facilities(db: Session = Depends(get_db)):
@@ -137,6 +164,8 @@ def facilities(db: Session = Depends(get_db)):
              "licence_valid": licence_ok(f) if f.kind == "processor" else None}
             for f in db.query(Facility)]
 
+
+# ---------- batches ----------
 @app.post("/api/v1/batches", status_code=201)
 def create_batch(body: BatchIn, db: Session = Depends(get_db)):
     if db.get(Batch, body.id):
@@ -156,11 +185,13 @@ def create_batch(body: BatchIn, db: Session = Depends(get_db)):
     commit_or_409(db)
     return batch_out(db, b)
 
+
 @app.get("/api/v1/batches")
 def list_batches(db: Session = Depends(get_db)):
     return [{"id": b.id, "category": b.category, "status": b.status,
              "custodian": b.custodian_id, "net_mass_kg": b.net_mass_g / 1000}
             for b in db.query(Batch).order_by(Batch.created_at.desc())]
+
 
 @app.get("/api/v1/batches/{batch_id}")
 def get_batch(batch_id: str, db: Session = Depends(get_db)):
@@ -169,6 +200,22 @@ def get_batch(batch_id: str, db: Session = Depends(get_db)):
         raise HTTPException(404, "Batch not found")
     return batch_out(db, b)
 
+
+@app.get("/api/v1/batches/{batch_id}/verify-chain")
+def verify_chain(batch_id: str, db: Session = Depends(get_db)):
+    prev = GENESIS
+    events = (db.query(AuditEvent).filter_by(batch_id=batch_id)
+              .order_by(AuditEvent.id).all())
+    for e in events:
+        if e.prev_hash != prev or json.loads(e.payload)["prev"] != prev:
+            return {"valid": False, "broken_at_event": e.id, "reason": "chain link mismatch"}
+        if hashlib.sha256(e.payload.encode()).hexdigest() != e.event_hash:
+            return {"valid": False, "broken_at_event": e.id, "reason": "payload tampered"}
+        prev = e.event_hash
+    return {"valid": True, "events": len(events), "head_hash": prev}
+
+
+# ---------- transfers ----------
 @app.post("/api/v1/transfers", status_code=201)
 def dispatch(body: TransferIn, db: Session = Depends(get_db)):
     b = db.get(Batch, body.batch_id)
@@ -196,6 +243,7 @@ def dispatch(body: TransferIn, db: Session = Depends(get_db)):
                  body.actor)
     commit_or_409(db)
     return batch_out(db, b)
+
 
 @app.post("/api/v1/transfers/{transfer_id}/receive")
 def receive(transfer_id: str, body: ReceiveIn, db: Session = Depends(get_db)):
@@ -230,6 +278,8 @@ def receive(transfer_id: str, body: ReceiveIn, db: Session = Depends(get_db)):
     commit_or_409(db)
     return batch_out(db, b)
 
+
+# ---------- audits ----------
 @app.get("/api/v1/audits")
 def audits(db: Session = Depends(get_db)):
     cutoff = utcnow() - timedelta(hours=OVERDUE_HOURS)
@@ -244,15 +294,33 @@ def audits(db: Session = Depends(get_db)):
                               for t in overdue],
     }
 
-@app.get("/api/v1/batches/{batch_id}/verify-chain")
-def verify_chain(batch_id: str, db: Session = Depends(get_db)):
-    prev = GENESIS
-    events = (db.query(AuditEvent).filter_by(batch_id=batch_id)
-              .order_by(AuditEvent.id).all())
-    for e in events:
-        if e.prev_hash != prev or json.loads(e.payload)["prev"] != prev:
-            return {"valid": False, "broken_at_event": e.id, "reason": "chain link mismatch"}
-        if hashlib.sha256(e.payload.encode()).hexdigest() != e.event_hash:
-            return {"valid": False, "broken_at_event": e.id, "reason": "payload tampered"}
-        prev = e.event_hash
-    return {"valid": True, "events": len(events), "head_hash": prev}
+
+# ---------- optimization (QpiAI Opt) ----------
+@app.post("/api/v1/optimization/solve")
+def optimize(mode: Literal["local", "platform"] = "local", db: Session = Depends(get_db)):
+    scn = json.loads(SCENARIO_PATH.read_text())
+    try:
+        rec = run_allocation(scn, Client(api_key=os.environ["QPIAI_OPT_API_KEY"]), mode)
+    except Exception as e:
+        raise HTTPException(502, f"QpiAI Opt execution failed: {e}")
+    run = OptimizationRun(id=f"OPT-{int(utcnow().timestamp())}", mode=mode,
+                          plan_hash=rec["plan_hash"], scenario_hash=rec["scenario_hash"],
+                          record=json.dumps(rec, default=str))
+    db.add(run)
+    db.commit()
+    return {"run_id": run.id, **json.loads(run.record)}
+
+
+@app.get("/api/v1/optimization/runs")
+def list_runs(db: Session = Depends(get_db)):
+    return [{"id": r.id, "mode": r.mode, "status": r.status, "plan_hash": r.plan_hash,
+             "created_at": r.created_at}
+            for r in db.query(OptimizationRun).order_by(OptimizationRun.created_at.desc())]
+
+
+@app.get("/api/v1/optimization/runs/{run_id}")
+def get_run(run_id: str, db: Session = Depends(get_db)):
+    r = db.get(OptimizationRun, run_id)
+    if not r:
+        raise HTTPException(404, "Run not found")
+    return {"id": r.id, "status": r.status, **json.loads(r.record)}
