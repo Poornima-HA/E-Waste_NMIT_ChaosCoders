@@ -136,6 +136,10 @@ We do **not** claim quantum advantage, and we do not claim the QAOA run executed
 
 > A hash proves a record was not altered after it was committed. It does **not** prove the original weighing was truthful; that depends on calibrated equipment and procedures.
 
+Full threat model, permissions and privacy notes: [docs/security-privacy.md](docs/security-privacy.md).
+Measured gas costs and deployment path: [docs/feasibility-cost.md](docs/feasibility-cost.md).
+Smart-contract security suite: 9/9 passed (`contracts/tests/test_contract.py`, `evidence/contract_test_report.xml`).
+
 ## 9. Recovery certificates
 
 - Issued only for an **accepted claim** from a run whose mass balance is not critical.
