@@ -26,6 +26,7 @@ p.add_argument("--device", default="QpiAI-QSV-Simulator")
 p.add_argument("--reps", type=int, default=2)
 p.add_argument("--iters", type=int, default=60)
 p.add_argument("--shots", type=int, default=2048)
+p.add_argument("--experiment", default="ewaste-qaoa-benchmark")
 args = p.parse_args()
 
 full = json.loads((ROOT / "optimization/fixtures/demo_scenario.json").read_text())
@@ -97,7 +98,7 @@ if args.mode == "platform":
 QpiAIQuantumAuth.login(api_key=os.environ["QPIAI_QCLOUD_API_KEY"])
 alg = QAOA(reps=args.reps, optimizer="cobyla", max_iterations=args.iters)
 run = (QuantumRun(shots=args.shots, seed=7) if args.mode == "local" else
-       QuantumRun(shots=args.shots, experiment_name="ewaste-qaoa-benchmark",
+       QuantumRun(shots=args.shots, experiment_name=args.experiment,
                   device_name=args.device))
 
 t0 = time.perf_counter()
