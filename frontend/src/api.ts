@@ -96,3 +96,55 @@ export type QBench = {
   matches_optimum: boolean; brute_force_cost_inr: number; milp_cost_inr: number;
   milp_guarantee: string; wall_time_s: number; sub_instance: string[];
 };
+// ---------- F4: recovery + audit ----------
+export type MaterialOut = {
+  id: number; material: string; mass_kg: number; allocated_kg: number; available_kg: number;
+};
+export type ProcRun = {
+  id: string; batch_id: string; facility_id: string;
+  input_kg: number; recovered_kg: number; residual_kg: number; loss_kg: number;
+  wip_change_kg: number; variance_kg: number; variance_pct: number; yield_pct: number;
+  balance_status: "pass" | "warning" | "critical"; evidence_hash: string;
+  operator: string; created_at: string;
+  thresholds: { pass_pct: number; critical_pct: number; note: string };
+  outputs: MaterialOut[];
+};
+export type ClaimAttemptT = {
+  id: number; claim_id: string; run_id: string; material: string; mass_kg: number;
+  claimant: string; decision: "accepted" | "rejected"; rule: string | null;
+  reason: string; created_at: string;
+};
+export type ClaimsList = {
+  accepted: { claim_id: string; output_id: number; claimant: string; mass_kg: number;
+    evidence_hash: string; created_at: string }[];
+  attempts: ClaimAttemptT[];
+};
+export type GateResult = {
+  decision: "accepted"; claim_id: string;
+  checks: { check: string; pass: boolean; detail?: string }[];
+};
+
+// ---------- inventory reconciliation ----------
+export type InvFinding = { rule: string; severity: string; message: string };
+export type InvRow = {
+  facility_id: string; material: string;
+  system_kg: number; disputed_kg: number; claimed_kg: number;
+  physical_kg: number | null; difference_kg: number | null; difference_pct: number | null;
+  status: "reconciled" | "warning" | "critical" | "not_counted";
+  findings: InvFinding[];
+  last_count: { counted_by: string; method: string; counted_at: string; evidence_hash: string } | null;
+};
+export type Reconciliation = {
+  tolerance: { pass_pct: number; critical_pct: number; note: string };
+  rows: InvRow[];
+};
+
+// ---------- costs ----------
+export type CostSummary = {
+  batch_id: string; total_inr: number;
+  by_category_inr: Record<"transport" | "processing" | "disposal" | "handling", number>;
+  collected_kg: number; recovered_kg: number;
+  cost_per_kg_collected_inr: number | null; cost_per_kg_recovered_inr: number | null;
+  records: { id: number; category: string; amount_inr: number; reference: string;
+    recorded_by: string; created_at: string }[];
+};

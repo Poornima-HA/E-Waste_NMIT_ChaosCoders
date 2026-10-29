@@ -1,14 +1,20 @@
-import DispatchOptimizer from "./pages/DispatchOptimizer";
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
-import { LayoutDashboard, Package, Route as RouteIcon, ShieldAlert, Link2 } from "lucide-react";
+import { Boxes, Factory, LayoutDashboard, Link2, Package, Route as RouteIcon, ShieldAlert } from "lucide-react";
+import ErrorBoundary from "./ErrorBoundary";
 import Dashboard from "./pages/Dashboard";
 import Batches from "./pages/Batches";
 import BatchPassport from "./pages/BatchPassport";
+import DispatchOptimizer from "./pages/DispatchOptimizer";
+import Recovery from "./pages/Recovery";
+import Inventory from "./pages/Inventory";
+import AuditCentre from "./pages/AuditCentre";
 
 const nav = [
   { to: "/", label: "Operations", icon: LayoutDashboard },
   { to: "/batches", label: "Batches", icon: Package },
   { to: "/dispatch", label: "Dispatch Optimizer", icon: RouteIcon },
+  { to: "/recovery", label: "Recovery & Claims", icon: Factory },
+  { to: "/inventory", label: "Inventory", icon: Boxes },
   { to: "/audit", label: "Audit Centre", icon: ShieldAlert },
   { to: "/ledger", label: "Blockchain", icon: Link2 },
 ];
@@ -54,14 +60,18 @@ export default function App() {
         </aside>
 
         <main className="min-w-0 flex-1">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/batches" element={<Batches />} />
-            <Route path="/batches/:id" element={<BatchPassport />} />
-            <Route path="/dispatch" element={<DispatchOptimizer />} />
-            <Route path="/audit" element={<Soon title="Audit Centre" />} />
-            <Route path="/ledger" element={<Soon title="Blockchain" />} />
-          </Routes>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/batches" element={<Batches />} />
+              <Route path="/batches/:id" element={<BatchPassport />} />
+              <Route path="/dispatch" element={<DispatchOptimizer />} />
+              <Route path="/recovery" element={<Recovery />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/audit" element={<AuditCentre />} />
+              <Route path="/ledger" element={<Soon title="Blockchain" />} />
+            </Routes>
+          </ErrorBoundary>
         </main>
       </div>
     </BrowserRouter>

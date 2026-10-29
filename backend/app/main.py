@@ -27,7 +27,7 @@ from .allocation import run_allocation
 UNIT_TO_G = {"g": Decimal(1), "kg": Decimal(1000), "t": Decimal(1_000_000)}
 RECEIPT_TOLERANCE_PCT = Decimal("0.5")   # demo threshold, not a regulatory standard
 CRITICAL_PCT = Decimal("2.0")
-OVERDUE_HOURS = 24
+OVERDUE_HOURS = 0.05   # DEMO: 3 minutes. Production would use the contractual SLA, e.g. 24 h
 GENESIS = "0" * 64
 SCENARIO_PATH = (Path(__file__).resolve().parents[2]
                  / "optimization" / "fixtures" / "demo_scenario.json")
@@ -331,3 +331,9 @@ def get_run(run_id: str, db: Session = Depends(get_db)):
 
 from .recovery import router as recovery_router
 app.include_router(recovery_router)
+
+from .inventory import router as inventory_router
+app.include_router(inventory_router)
+
+from .costs import router as costs_router
+app.include_router(costs_router)
