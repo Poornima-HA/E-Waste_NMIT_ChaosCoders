@@ -132,10 +132,10 @@ with TestClient(app) as c:     # creates tables + seeds facilities
     print("      M  EW-2026-0003  500 kg sent, 492 kg received at F2 -> disputed")
 
     # ---------- ready for live processing + fraud demo ----------
-    batch(c, "EW-2026-0004", "CC-B", "IT", 400)
-    dispatch(c, "TR-0004", "EW-2026-0004", "F1", 400)
-    receive(c, "TR-0004", "F1", 400)
-    print("      C  EW-2026-0004  400 kg received at F1, ready for LIVE processing")
+    batch(c, "EW-2026-0004", "CC-B", "IT", 500)
+    dispatch(c, "TR-0004", "EW-2026-0004", "F1", 500)
+    receive(c, "TR-0004", "F1", 500)
+    print("      C  EW-2026-0004  500 kg received at F1, ready for LIVE processing")
 
     # ---------- ready for live merge ----------
     batch(c, "EW-2026-0005", "CC-B", "CONSUMER", 120)

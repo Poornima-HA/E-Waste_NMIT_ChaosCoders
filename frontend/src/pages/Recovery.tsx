@@ -39,8 +39,8 @@ export default function Recovery() {
   const [runId, setRunId] = useState("");
   const [material, setMaterial] = useState("copper");
   const [claimKg, setClaimKg] = useState("80");
-  const [claimId, setClaimId] = useState("CL-COPPER-001");
-  const [claimEv, setClaimEv] = useState("Buyer invoice INV-7781");
+  const [claimId, setClaimId] = useState("CL-COPPER-101");
+  const [claimEv, setClaimEv] = useState("Buyer invoice INV-8801");
   const [gate, setGate] = useState<{ ok: boolean; result?: GateResult; text?: string } | null>(null);
 
   const load = async () => {
@@ -253,11 +253,11 @@ export default function Recovery() {
           <h2 className="flex items-center gap-2 font-medium"><ShieldCheck size={16} /> Recovery Integrity Gate: submit a material claim</h2>
           <div className="mt-2 flex flex-wrap gap-2">
             <span className="text-xs text-slate-500">Demo presets:</span>
-            <button className={ghost} onClick={() => preset("CL-COPPER-001", "copper", "80", "Buyer invoice INV-7781")}>✅ Legitimate copper claim</button>
-            <button className={ghost} onClick={() => preset("CL-COPPER-002", "copper", "80", "Buyer invoice INV-7782")}>🛑 Double-claim same copper</button>
-            <button className={ghost} onClick={() => preset("CL-COPPER-001", "copper", "10", "Buyer invoice INV-9001")}>🛑 Reuse claim ID</button>
-            <button className={ghost} onClick={() => preset("CL-ALU-001", "aluminium", "20", "Buyer invoice INV-7781")}>🛑 Reuse invoice</button>
-          </div>
+            <button className={ghost} onClick={() => preset("CL-COPPER-101", "copper", "80", "Buyer invoice INV-8801")}>✅ Legitimate copper claim</button>
+            <button className={ghost} onClick={() => preset("CL-COPPER-102", "copper", "80", "Buyer invoice INV-8802")}>🛑 Double-claim same copper</button>
+            <button className={ghost} onClick={() => preset("CL-COPPER-101", "copper", "10", "Buyer invoice INV-9001")}>🛑 Reuse claim ID</button>
+            <button className={ghost} onClick={() => preset("CL-ALU-101", "aluminium", "20", "Buyer invoice INV-8801")}>🛑 Reuse invoice</button>
+            </div>
           <div className="mt-3 grid gap-3 md:grid-cols-6">
             <label className="text-xs text-slate-500">Processing run
               <select className={input} value={runId} onChange={(e) => setRunId(e.target.value)}>
