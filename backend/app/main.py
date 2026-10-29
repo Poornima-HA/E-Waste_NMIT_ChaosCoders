@@ -43,18 +43,21 @@ def seed(db: Session):
         return
     db.add_all([
         Facility(id="CC-A", name="Collection Centre A (demo)", kind="collection"),
+        Facility(id="CC-B", name="Collection Centre B (demo)", kind="collection"),
         Facility(id="F1", name="Recycler Alpha (demo)", kind="processor",
                  licence_no="DEMO-LIC-001", licence_valid_until=date(2027, 3, 31),
-                 accepted_categories="IT,TELECOM,CONSUMER", capacity_g=2_000_000),
+                 accepted_categories="IT,TELECOM,CONSUMER", capacity_g=1_200_000),
         Facility(id="F2", name="Recycler Beta (demo)", kind="processor",
                  licence_no="DEMO-LIC-002", licence_valid_until=date(2027, 6, 30),
                  accepted_categories="IT,CONSUMER", capacity_g=1_000_000),
         Facility(id="F3", name="Recycler Gamma (demo, EXPIRED)", kind="processor",
                  licence_no="DEMO-LIC-003", licence_valid_until=date(2026, 9, 30),
                  accepted_categories="IT,TELECOM,CONSUMER", capacity_g=3_000_000),
+        Facility(id="F4", name="Recycler Delta (demo)", kind="processor",
+                 licence_no="DEMO-LIC-004", licence_valid_until=date(2027, 1, 31),
+                 accepted_categories="TELECOM,CONSUMER", capacity_g=900_000),
     ])
     db.commit()
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
