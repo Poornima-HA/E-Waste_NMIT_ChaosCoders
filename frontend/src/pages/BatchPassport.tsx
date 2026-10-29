@@ -1,3 +1,4 @@
+import CostPanel from "../CostPanel";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Link2, ShieldAlert, ShieldCheck, Truck } from "lucide-react";
@@ -190,7 +191,7 @@ export default function BatchPassport() {
           </div>
         </div>
       </div>
-
+      <CostPanel batchId={b.id} />
       {/* custody timeline */}
       <div className={card}>
         <h2 className="border-b border-slate-200 px-4 py-3 font-medium">Chain of custody</h2>
