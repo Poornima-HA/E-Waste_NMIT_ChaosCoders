@@ -1,3 +1,4 @@
+import LineagePanel from "../LineagePanel";
 import CostPanel from "../CostPanel";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -191,6 +192,7 @@ export default function BatchPassport() {
           </div>
         </div>
       </div>
+            <LineagePanel batchId={b.id} status={b.status} custodian={b.custodian} category={b.category} onChange={load} />
       <CostPanel batchId={b.id} />
       {/* custody timeline */}
       <div className={card}>

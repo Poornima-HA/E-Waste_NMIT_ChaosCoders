@@ -148,3 +148,14 @@ export type CostSummary = {
   records: { id: number; category: string; amount_inr: number; reference: string;
     recorded_by: string; created_at: string }[];
 };
+
+// ---------- lineage ----------
+export type LineageNode = {
+  id: string; category: string; status: string; custodian: string; source: string; mass_kg: number;
+};
+export type LineageEdge = {
+  parent_id: string; child_id: string; mass_kg: number; relation: "split" | "merge";
+};
+export type Lineage = {
+  root: string; available_kg: number | null; nodes: LineageNode[]; edges: LineageEdge[];
+};

@@ -337,3 +337,6 @@ app.include_router(inventory_router)
 
 from .costs import router as costs_router
 app.include_router(costs_router)
+
+from .lineage import router as lineage_router
+app.include_router(lineage_router)
