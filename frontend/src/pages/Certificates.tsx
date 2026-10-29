@@ -166,6 +166,10 @@ export default function Certificates() {
                   className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs hover:bg-slate-100">
                   <ExternalLink size={12} /> Public verify page
                 </a>
+                                <a href={`/verify/certificate/${c.id}/print`} target="_blank" rel="noreferrer"
+                  className="inline-flex items-center gap-1 rounded-md border border-slate-300 px-3 py-1.5 text-xs hover:bg-slate-100">
+                  📄 Certificate PDF
+                </a>
                 {c.status === "issued" && retiring !== c.id && (
                   <button className="rounded-md border border-slate-300 px-3 py-1.5 text-xs hover:bg-slate-100"
                     onClick={() => setRetiring(c.id)}>

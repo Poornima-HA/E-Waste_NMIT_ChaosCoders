@@ -1,3 +1,4 @@
+import CertificatePrint from "./pages/CertificatePrint";
 import { useEffect, useState } from "react";
 import { BrowserRouter, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import {
@@ -189,6 +190,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* public, read-only, no sidebar: what a QR scan opens */}
+        <Route path="/verify/certificate/:id/print" element={<ErrorBoundary><CertificatePrint /></ErrorBoundary>} />
         <Route path="/verify/certificate/:id" element={<ErrorBoundary><VerifyCertificate /></ErrorBoundary>} />
         <Route path="/verify/batch/:id" element={<ErrorBoundary><VerifyBatch /></ErrorBoundary>} />
         {/* internal console */}

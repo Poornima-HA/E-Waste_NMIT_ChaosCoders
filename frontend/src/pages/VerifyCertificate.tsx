@@ -57,6 +57,10 @@ export default function VerifyCertificate() {
                 <div className="text-3xl">{b.icon}</div>
                 <h1 className="mt-1 text-xl font-bold">{b.title}</h1>
                 <p className="mt-1 text-sm">Certificate <b>{v.certificate_id}</b> · {p.claim.mass_kg} kg recovered <b>{p.claim.material}</b></p>
+                <a href={`/verify/certificate/${v.certificate_id}/print`}
+                  className="mt-3 inline-block rounded-md bg-slate-900 px-3 py-1.5 text-sm text-white hover:bg-slate-800">
+                  📄 View / download certificate (PDF)
+                </a>
                 {v.verdict === "retired" && (
                   <p className="mt-2 text-sm">
                     Used by <b>{v.retired_by}</b> for "{v.retire_purpose}" on {v.retired_at?.replace("T", " ").slice(0, 16)}.

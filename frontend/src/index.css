@@ -21,3 +21,22 @@ button:active:not(:disabled) { transform: translateY(1px); }
   to   { opacity: 1; transform: none; }
 }
 .page-enter { animation: page-enter .22s ease-out; }
+
+
+/* ---------- printable certificate ---------- */
+@media print {
+  @page { size: A4; margin: 0; }
+  html, body { width: 210mm; height: 297mm; margin: 0; }
+  .no-print { display: none !important; }
+  body { background: #fff !important; }
+  .print-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    overflow: hidden !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+}
+.print-sheet { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
