@@ -159,3 +159,31 @@ export type LineageEdge = {
 export type Lineage = {
   root: string; available_kg: number | null; nodes: LineageNode[]; edges: LineageEdge[];
 };
+
+// ---------- governance + metrics ----------
+export type Resolution = {
+  id: number; alert_id: number; from: string; to: string; reviewer: string; note: string; at: string;
+};
+export type Metrics = {
+  operations: { batches: number; original_batches: number; collected_kg: number;
+    processed_input_kg: number; recovered_kg: number; avg_yield_pct: number | null };
+  custody: { transfers: number; received: number; disputed: number;
+    missing_handovers: number; total_receipt_gap_kg: number };
+  mass_balance: { runs: number; pass: number; warning: number; critical: number; unexplained_kg: number };
+  claims: { accepted: number; accepted_kg: number; blocked: number; blocked_kg: number;
+    blocked_by_rule: Record<string, number> };
+  inventory: Record<string, number>;
+  alerts: { total: number; open: number; investigating: number; resolved: number;
+    false_positive: number; critical_open: number };
+  blockchain: { events: number; anchored_events: number; confirmed_receipts: number; failed_receipts: number };
+  optimization: null | {
+    run_id: string; status: string; guarantee: string;
+    optimized_assigned: string; baseline_assigned: string;
+    optimized_feasible: boolean; baseline_feasible: boolean;
+    optimized_inr_per_kg: number | null; baseline_inr_per_kg: number | null;
+    per_kg_saving_pct?: number;
+  };
+  quantum: { benchmarks: number; matches_optimum: number; cloud_jobs: number };
+  tests: null | { tests: number; passed: number; failures: number; errors: number;
+    skipped: number; report: string; generated: string | null };
+};

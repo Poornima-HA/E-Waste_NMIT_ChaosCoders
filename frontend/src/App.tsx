@@ -1,5 +1,5 @@
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
-import { Boxes, Factory, LayoutDashboard, Link2, Package, Route as RouteIcon, ShieldAlert } from "lucide-react";
+import { BarChart3, Boxes, Factory, LayoutDashboard, Link2, Package, Route as RouteIcon, ShieldAlert } from "lucide-react";
 import ErrorBoundary from "./ErrorBoundary";
 import Dashboard from "./pages/Dashboard";
 import Batches from "./pages/Batches";
@@ -9,6 +9,7 @@ import Recovery from "./pages/Recovery";
 import Inventory from "./pages/Inventory";
 import AuditCentre from "./pages/AuditCentre";
 import Ledger from "./pages/Ledger";
+import MetricsPage from "./pages/Metrics";
 
 const nav = [
   { to: "/", label: "Operations", icon: LayoutDashboard },
@@ -18,6 +19,7 @@ const nav = [
   { to: "/inventory", label: "Inventory", icon: Boxes },
   { to: "/audit", label: "Audit Centre", icon: ShieldAlert },
   { to: "/ledger", label: "Blockchain", icon: Link2 },
+  { to: "/impact", label: "Impact & Evidence", icon: BarChart3 },
 ];
 
 export default function App() {
@@ -62,6 +64,7 @@ export default function App() {
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/audit" element={<AuditCentre />} />
               <Route path="/ledger" element={<Ledger />} />
+              <Route path="/impact" element={<MetricsPage />} />
             </Routes>
           </ErrorBoundary>
         </main>

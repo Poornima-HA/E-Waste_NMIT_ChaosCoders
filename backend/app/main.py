@@ -343,3 +343,6 @@ app.include_router(costs_router)
 
 from .lineage import router as lineage_router
 app.include_router(lineage_router)
+
+from .governance import router as governance_router
+app.include_router(governance_router)
