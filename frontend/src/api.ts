@@ -33,3 +33,29 @@ export type ChainStatus = {
   connected: boolean; network: string; chain_id: number; contract: string;
   deploy_tx: string; latest_block: number; public: boolean;
 };
+
+export type Transfer = {
+  id: string; from: string; to: string; status: string;
+  dispatch_kg: number; receipt_kg: number | null;
+  dispatched_at: string; received_at: string | null;
+};
+export type ChainEvent = {
+  id: number; type: string; actor: string; hash: string;
+  prev_hash: string; chain_status: string; at: string;
+};
+export type BatchDetail = BatchSummary & {
+  source: string; original_reading: string; operator: string; weighed_at: string;
+  transfers: Transfer[]; events: ChainEvent[];
+  alerts: { id: number; rule: string; severity: string; message: string; status: string }[];
+};
+export type Receipt = {
+  subject: string; status: string; anchored_hash: string; event_count: number | null;
+  network: string; contract: string; tx_hash: string | null; block: number | null;
+  note: string | null; explorer: string | null;
+};
+export type VerifyResult = {
+  batch_id: string; status: "verified" | "mismatch" | "not_anchored"; network: string;
+  onchain_head: string | null; onchain_event_count: number; db_event_count: number;
+  unanchored_events: number; db_chain_broken_at_event: number | null;
+  last_receipt: Receipt | null; tx_receipt_verified: boolean | null;
+};
