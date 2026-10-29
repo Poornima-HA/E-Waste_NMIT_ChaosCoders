@@ -216,3 +216,7 @@ def approve_plan(run_id: str, db: Session = Depends(get_db)):
         run.status = "approved"
     db.commit()
     return {"run_id": run.id, "run_status": run.status, "receipt": receipt_out(rec)}
+@router.get("/api/v1/blockchain/receipts")
+def list_receipts(db: Session = Depends(get_db)):
+    return [{**receipt_out(r), "id": r.id, "created_at": r.created_at}
+            for r in db.query(BlockchainReceipt).order_by(BlockchainReceipt.id.desc())]

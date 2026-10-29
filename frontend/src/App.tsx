@@ -8,6 +8,7 @@ import DispatchOptimizer from "./pages/DispatchOptimizer";
 import Recovery from "./pages/Recovery";
 import Inventory from "./pages/Inventory";
 import AuditCentre from "./pages/AuditCentre";
+import Ledger from "./pages/Ledger";
 
 const nav = [
   { to: "/", label: "Operations", icon: LayoutDashboard },
@@ -18,15 +19,6 @@ const nav = [
   { to: "/audit", label: "Audit Centre", icon: ShieldAlert },
   { to: "/ledger", label: "Blockchain", icon: Link2 },
 ];
-
-function Soon({ title }: { title: string }) {
-  return (
-    <div className="p-8">
-      <h1 className="text-2xl font-semibold">{title}</h1>
-      <p className="mt-2 text-slate-500">Coming in the next step.</p>
-    </div>
-  );
-}
 
 export default function App() {
   return (
@@ -69,7 +61,7 @@ export default function App() {
               <Route path="/recovery" element={<Recovery />} />
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/audit" element={<AuditCentre />} />
-              <Route path="/ledger" element={<Soon title="Blockchain" />} />
+              <Route path="/ledger" element={<Ledger />} />
             </Routes>
           </ErrorBoundary>
         </main>
