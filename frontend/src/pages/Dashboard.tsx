@@ -1,3 +1,5 @@
+import MaterialFlow from "../MaterialFlow";
+import HeroStrip from "../HeroStrip";
 import { useEffect, useState } from "react";
 import { AlertTriangle, CheckCircle2, Link2, Package, Scale, Truck } from "lucide-react";
 import { api } from "../api";
@@ -94,7 +96,7 @@ export default function Dashboard() {
           Refresh
         </button>
       </div>
-
+      <HeroStrip />
       {data.chain && !data.chain.public && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
           ⚠ Blockchain is running in <b>local demo mode</b> ({data.chain.network}). Anchors are real
@@ -116,6 +118,7 @@ export default function Dashboard() {
           icon={<Link2 size={16} />} tone={data.chain ? (data.chain.public ? "green" : "amber") : "red"} />
       </div>
 
+      <MaterialFlow />
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-lg border border-slate-200 bg-white">
           <h2 className="border-b border-slate-200 px-4 py-3 font-medium">Audit alerts</h2>

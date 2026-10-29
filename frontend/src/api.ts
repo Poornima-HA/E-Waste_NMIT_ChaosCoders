@@ -1,8 +1,35 @@
 // ---------- HTTP helper ----------
+// ---------- acting participant (demo identity switcher) ----------
+export const ACTOR_KEY = "ewl-actor";
+
+export function currentActor(): string | null {
+  try {
+    return localStorage.getItem(ACTOR_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function setActor(id: string | null) {
+  try {
+    if (id) localStorage.setItem(ACTOR_KEY, id);
+    else localStorage.removeItem(ACTOR_KEY);
+  } catch {
+    /* storage unavailable: ignore */
+  }
+  window.location.reload();
+}
+
+// ---------- HTTP helper ----------
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
+  const actor = currentActor();
   const res = await fetch(path, {
-    headers: { "Content-Type": "application/json" },
     ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(actor ? { "X-Actor": actor } : {}),
+      ...(init?.headers ?? {}),
+    },
   });
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -227,4 +254,22 @@ export type PublicBatch = {
   certificates: { id: string; status: string; material: string; mass_kg: number }[];
   verification: { status: string; network?: string; onchain_event_count?: number;
     db_event_count?: number; unanchored_events?: number; detail?: string };
+};
+
+// ---------- roles + workspace ----------
+export type Role = "generator" | "collector" | "transporter" | "recycler" | "auditor" | "buyer";
+export type Actor = {
+  id: string; name: string; role: Role; role_label: string; step: number; does: string;
+  facility_id: string | null;
+};
+export type Workspace = {
+  actor: Actor;
+  incoming: { transfer_id: string; batch_id: string; from: string; dispatch_kg: number; dispatched_at: string }[];
+  holding: { batch_id: string; category: string; mass_kg: number; disputed: boolean; status: string }[];
+  sent: { transfer_id: string; batch_id: string; to: string; dispatch_kg: number; receipt_kg: number | null; status: string }[];
+  next_parties: { id: string; name: string; eligible: boolean; note: string | null }[];
+  my_batches: { batch_id: string; category: string; mass_kg: number; status: string; custodian: string }[];
+  to_certify: { claim_id: string; material: string; mass_kg: number }[];
+  certificates: { id: string; material: string; mass_kg: number; status: string; retired_by: string | null }[];
+  audit: null | { open_alerts: number; critical_open: number };
 };

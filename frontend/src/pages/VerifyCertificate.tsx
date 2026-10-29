@@ -76,7 +76,7 @@ export default function VerifyCertificate() {
                   </li>
                   <li>{v.onchain?.retired_at ? "🔁 Marked as used on-chain" : "✔ Not marked as used on-chain"}</li>
                 </ul>
-                <p className="mt-2 font-mono text-xs text-slate-500">sha256 {v.cert_hash}</p>
+                <p className="mt-2 break-all font-mono text-xs text-slate-500">sha256 {v.cert_hash}</p>
                 {v.onchain && (
                   <p className="mt-1 text-xs text-slate-500">
                     {v.onchain.network} · contract {short(v.onchain.contract, 10)}

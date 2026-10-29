@@ -42,8 +42,10 @@ def seed(db: Session):
     if db.query(Facility).count():
         return
     db.add_all([
+        Facility(id="GEN-1", name="TechCorp Pvt Ltd · IT asset disposal (demo)", kind="generator"),
         Facility(id="CC-A", name="Collection Centre A (demo)", kind="collection"),
         Facility(id="CC-B", name="Collection Centre B (demo)", kind="collection"),
+        Facility(id="TR-1", name="GreenMove Logistics (demo)", kind="transporter"),
         Facility(id="F1", name="Recycler Alpha (demo)", kind="processor",
                  licence_no="DEMO-LIC-001", licence_valid_until=date(2027, 3, 31),
                  accepted_categories="IT,TELECOM,CONSUMER", capacity_g=1_200_000),
@@ -58,7 +60,6 @@ def seed(db: Session):
                  accepted_categories="TELECOM,CONSUMER", capacity_g=900_000),
     ])
     db.commit()
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(engine)
@@ -178,8 +179,8 @@ def create_batch(body: BatchIn, db: Session = Depends(get_db)):
     if db.get(Batch, body.id):
         raise HTTPException(409, "Batch ID already exists")
     src = db.get(Facility, body.source_facility_id)
-    if not src or src.kind != "collection":
-        raise HTTPException(422, "Source must be a registered collection centre")
+    if not src or src.kind not in ("collection", "generator"):
+        raise HTTPException(422, "Source must be a registered e-waste company or collection centre")
     g = to_grams(body.mass.value, body.mass.unit)
     b = Batch(id=body.id, source_facility_id=src.id, category=body.category,
               net_mass_g=g, original_reading=f"{body.mass.value} {body.mass.unit}",
@@ -349,3 +350,10 @@ app.include_router(governance_router)
 
 from .certificates import router as certificates_router
 app.include_router(certificates_router)
+
+from .analytics import router as analytics_router
+app.include_router(analytics_router)
+
+from .roles import router as roles_router, role_guard
+app.include_router(roles_router)
+app.middleware("http")(role_guard)

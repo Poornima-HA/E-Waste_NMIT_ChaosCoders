@@ -1,3 +1,4 @@
+import JourneyStepper from "../JourneyStepper";
 import PassportQrPanel from "../PassportQrPanel";
 import LineagePanel from "../LineagePanel";
 import CostPanel from "../CostPanel";
@@ -193,6 +194,7 @@ export default function BatchPassport() {
           </div>
         </div>
       </div>
+            <JourneyStepper b={b} />
             <PassportQrPanel batchId={b.id} />
             <LineagePanel batchId={b.id} status={b.status} custodian={b.custodian} category={b.category} onChange={load} />
       <CostPanel batchId={b.id} />
