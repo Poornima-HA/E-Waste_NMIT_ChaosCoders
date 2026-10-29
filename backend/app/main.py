@@ -328,3 +328,6 @@ def get_run(run_id: str, db: Session = Depends(get_db)):
     if not r:
         raise HTTPException(404, "Run not found")
     return {"id": r.id, "status": r.status, **json.loads(r.record)}
+
+from .recovery import router as recovery_router
+app.include_router(recovery_router)
