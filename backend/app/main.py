@@ -68,6 +68,8 @@ app = FastAPI(title="E-Waste Ledger API", version="0.3.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"],
                    allow_methods=["*"], allow_headers=["*"])
 
+from .blockchain import router as blockchain_router
+app.include_router(blockchain_router)
 
 # ---------- schemas ----------
 class Mass(BaseModel):
