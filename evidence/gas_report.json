@@ -1,0 +1,41 @@
+{
+  "note": "gasUsed measured on a local EVM (ganache). Cost columns use ILLUSTRATIVE gas prices, not live market prices: cost_ETH = gas x gwei x 1e-9.",
+  "gas_used": {
+    "deploy": 932121,
+    "setAttestor": 36830,
+    "anchorBatchHead": 64426,
+    "anchorPlan": 50515,
+    "issueCertificate": 72463,
+    "retireCertificate": 36653,
+    "per_batch_lifecycle (2 anchors + issue + retire)": 237968
+  },
+  "illustrative_cost_eth": {
+    "1_gwei": {
+      "deploy": 0.00093212,
+      "setAttestor": 3.683e-05,
+      "anchorBatchHead": 6.443e-05,
+      "anchorPlan": 5.052e-05,
+      "issueCertificate": 7.246e-05,
+      "retireCertificate": 3.665e-05,
+      "per_batch_lifecycle (2 anchors + issue + retire)": 0.00023797
+    },
+    "10_gwei": {
+      "deploy": 0.00932121,
+      "setAttestor": 0.0003683,
+      "anchorBatchHead": 0.00064426,
+      "anchorPlan": 0.00050515,
+      "issueCertificate": 0.00072463,
+      "retireCertificate": 0.00036653,
+      "per_batch_lifecycle (2 anchors + issue + retire)": 0.00237968
+    },
+    "30_gwei": {
+      "deploy": 0.02796363,
+      "setAttestor": 0.0011049,
+      "anchorBatchHead": 0.00193278,
+      "anchorPlan": 0.00151545,
+      "issueCertificate": 0.00217389,
+      "retireCertificate": 0.00109959,
+      "per_batch_lifecycle (2 anchors + issue + retire)": 0.00713904
+    }
+  }
+}
