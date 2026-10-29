@@ -346,3 +346,6 @@ app.include_router(lineage_router)
 
 from .governance import router as governance_router
 app.include_router(governance_router)
+
+from .certificates import router as certificates_router
+app.include_router(certificates_router)

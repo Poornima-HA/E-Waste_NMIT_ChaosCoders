@@ -1,9 +1,9 @@
 {
   "network": "1337",
   "chain_id": 1337,
-  "address": "0xD833215cBcc3f914bD1C9ece3EE7BF8B14f841bb",
-  "deploy_tx": "0x59188fac70f5ba1966fd1b900489ba104b480b5a948b2b41d54b7292603b5344",
-  "block": 6,
+  "address": "0x9b1f7F645351AF3631a656421eD2e40f2802E6c0",
+  "deploy_tx": "0x5ba31e408f0b79f1677de8e14ee3eaf877330a36ec022eb5a052a500c123f8d6",
+  "block": 11,
   "deployer": "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1",
   "solc": "0.8.24"
 }

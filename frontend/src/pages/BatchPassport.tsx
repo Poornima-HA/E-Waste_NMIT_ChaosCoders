@@ -1,3 +1,4 @@
+import PassportQrPanel from "../PassportQrPanel";
 import LineagePanel from "../LineagePanel";
 import CostPanel from "../CostPanel";
 import { useCallback, useEffect, useState } from "react";
@@ -192,6 +193,7 @@ export default function BatchPassport() {
           </div>
         </div>
       </div>
+            <PassportQrPanel batchId={b.id} />
             <LineagePanel batchId={b.id} status={b.status} custodian={b.custodian} category={b.category} onChange={load} />
       <CostPanel batchId={b.id} />
       {/* custody timeline */}

@@ -11,6 +11,7 @@ TEST_DB = BACKEND / "test_ewaste.db"
 if TEST_DB.exists():
     TEST_DB.unlink()
 os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DB.as_posix()}"   # set BEFORE importing the app
+os.environ["RPC_URL"] = "http://127.0.0.1:9"   # tests never touch the demo blockchain
 sys.path.insert(0, str(BACKEND))
 
 from fastapi.testclient import TestClient  # noqa: E402

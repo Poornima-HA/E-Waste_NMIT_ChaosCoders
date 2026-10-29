@@ -187,3 +187,44 @@ export type Metrics = {
   tests: null | { tests: number; passed: number; failures: number; errors: number;
     skipped: number; report: string; generated: string | null };
 };
+
+// ---------- certificates + public verification ----------
+export type CertSummary = {
+  id: string; claim_id: string; batch_id: string; material: string; mass_kg: number;
+  status: "issued" | "retired"; chain_status: string; cert_hash: string;
+  issue_tx: string | null; retire_tx: string | null; retired_by: string | null;
+  retire_purpose: string | null; retired_at: string | null; issued_at: string;
+};
+export type EligibleClaim = {
+  claim_id: string; run_id: string; batch_id: string; material: string; mass_kg: number; claimant: string;
+};
+export type CertPayload = {
+  certificate_id: string; standard: string;
+  claim: { claim_id: string; material: string; mass_kg: number; claimant: string;
+    evidence_sha256: string; accepted_at: string };
+  processing: { run_id: string; facility: string; input_kg: number; recovered_kg: number;
+    variance_pct: number; yield_pct: number; balance_status: string; evidence_sha256: string };
+  batch: { batch_id: string; category: string; source: string;
+    origins: { id: string; source: string }[]; audit_chain_head: string | null; events: number };
+  integrity_checks: string[];
+  documents: { name: string; sha256: string; bytes: number }[];
+  issued_by: string; issued_at: string;
+};
+export type CertVerify = {
+  certificate_id: string; verdict: "valid" | "retired" | "tampered" | "unverified"; status: string;
+  payload: CertPayload; cert_hash: string; recomputed_hash: string; db_integrity: boolean;
+  onchain: null | { cert_hash: string; issued_at: number; retired_at: number; network: string;
+    contract: string; public: boolean };
+  chain_error: string | null; retired_by: string | null; retire_purpose: string | null;
+  retired_at: string | null; issue_tx: string | null; retire_tx: string | null;
+};
+export type PublicBatch = {
+  id: string; category: string; status: string; source: string; custodian: string; mass_kg: number;
+  original_reading: string; weighed_at: string; origins: { id: string; source: string }[];
+  transfers: { id: string; from: string; to: string; dispatch_kg: number; receipt_kg: number | null; status: string }[];
+  processing: { run_id: string; facility: string; input_kg: number; recovered_kg: number;
+    yield_pct: number; balance_status: string }[];
+  certificates: { id: string; status: string; material: string; mass_kg: number }[];
+  verification: { status: string; network?: string; onchain_event_count?: number;
+    db_event_count?: number; unanchored_events?: number; detail?: string };
+};

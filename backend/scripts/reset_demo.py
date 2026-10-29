@@ -142,7 +142,12 @@ with TestClient(app) as c:     # creates tables + seeds facilities
     batch(c, "EW-2026-0006", "CC-B", "CONSUMER", 80)
     print("      L  EW-2026-0005/0006  CONSUMER at CC-B, ready for LIVE merge")
 
+    r = c.post("/api/v1/certificates", json={"claim_id": "CL-COPPER-001",
+                                             "issued_by": "recycler-alpha", "documents": []})
+    print(f"      certificate for CL-COPPER-001: "
+          f"{r.json()['id'] + ' (' + r.json()['chain_status'] + ')' if r.is_success else r.text}")
     # ---------- 5. anchor on-chain ----------
+    
     print("[5/6] Anchoring audit chains on-chain ...")
     for bid in ["EW-2026-0001", "EW-2026-0003", "EW-2026-0004"]:
         anchor(c, bid)
