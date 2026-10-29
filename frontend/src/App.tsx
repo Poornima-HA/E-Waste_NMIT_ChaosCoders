@@ -1,3 +1,4 @@
+import DispatchOptimizer from "./pages/DispatchOptimizer";
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import { LayoutDashboard, Package, Route as RouteIcon, ShieldAlert, Link2 } from "lucide-react";
 import Dashboard from "./pages/Dashboard";
@@ -57,7 +58,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/batches" element={<Batches />} />
             <Route path="/batches/:id" element={<BatchPassport />} />
-            <Route path="/dispatch" element={<Soon title="Dispatch Optimizer" />} />
+            <Route path="/dispatch" element={<DispatchOptimizer />} />
             <Route path="/audit" element={<Soon title="Audit Centre" />} />
             <Route path="/ledger" element={<Soon title="Blockchain" />} />
           </Routes>

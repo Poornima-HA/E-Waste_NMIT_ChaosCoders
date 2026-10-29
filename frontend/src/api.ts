@@ -1,3 +1,4 @@
+// ---------- HTTP helper ----------
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, {
     headers: { "Content-Type": "application/json" },
@@ -11,6 +12,7 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   return body as T;
 }
 
+// ---------- F1: dashboard ----------
 export type BatchSummary = {
   id: string; category: string; status: string; custodian: string; net_mass_kg: number;
 };
@@ -34,6 +36,7 @@ export type ChainStatus = {
   deploy_tx: string; latest_block: number; public: boolean;
 };
 
+// ---------- F2: batch passport ----------
 export type Transfer = {
   id: string; from: string; to: string; status: string;
   dispatch_kg: number; receipt_kg: number | null;
@@ -58,4 +61,38 @@ export type VerifyResult = {
   onchain_head: string | null; onchain_event_count: number; db_event_count: number;
   unanchored_events: number; db_chain_broken_at_event: number | null;
   last_receipt: Receipt | null; tx_receipt_verified: boolean | null;
+};
+
+// ---------- F3: dispatch optimizer ----------
+export type PlanCheck = {
+  plan: Record<string, string[]>; feasible: boolean; violations: string[];
+  assigned: number; total_batches: number; total_cost_inr: number;
+  load_kg: Record<string, number>;
+};
+export type OptResult = {
+  run_id?: string; id?: string; status?: string;
+  scenario_name: string; scenario_hash: string; plan_hash: string; as_of: string;
+  excluded_pairs: { batch: string; facility: string; reasons: string[] }[];
+  cost_matrix_inr: { batch: string; facility: string; cost: number }[];
+  solver: {
+    product: string; execution_mode: string; problem_class: string;
+    objective: number | null; method: string | null; termination: string | null;
+    guarantee: string | null; job_id: string | null;
+    solver_time_s: number | null; wall_time_s: number;
+  };
+  optimized: PlanCheck; baseline_nearest: PlanCheck;
+  objective_matches_independent_cost: boolean; cost_improvement_pct: number | null;
+};
+export type Scenario = {
+  name: string; transport_rate_inr_per_kg_km: number;
+  facilities: { id: string; name: string; capacity_kg: number; licence_valid_until: string;
+    processing_inr_per_kg: Record<string, number> }[];
+  batches: { id: string; source: string; category: string; mass_kg: number }[];
+};
+export type QBench = {
+  file: string; mode: string; device: string; backend: string | null; job_ids: string[];
+  qubits: number; depth: number; reps: number; shots: number;
+  plan: Record<string, string[]>; feasible: boolean; cost_inr: number; guarantee: string;
+  matches_optimum: boolean; brute_force_cost_inr: number; milp_cost_inr: number;
+  milp_guarantee: string; wall_time_s: number; sub_instance: string[];
 };

@@ -70,6 +70,8 @@ app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"],
 
 from .blockchain import router as blockchain_router
 app.include_router(blockchain_router)
+from .optimization_routes import router as optimization_router
+app.include_router(optimization_router)
 
 # ---------- schemas ----------
 class Mass(BaseModel):
