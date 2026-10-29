@@ -93,11 +93,15 @@ def anchor(c, bid):
 with TestClient(app) as c:     # creates tables + seeds facilities
     print("[3/6] Facilities seeded:", ", ".join(f["id"] for f in call(c, "GET", "/api/v1/facilities")))
 
-    # ---------- Scenario A: clean end-to-end ----------
+        # ---------- Scenario A: clean end-to-end, full participant chain ----------
     print("[4/6] Building demo scenarios ...")
-    batch(c, "EW-2026-0001", "CC-A", "IT", 500)
-    dispatch(c, "TR-0001", "EW-2026-0001", "F1", 500)
-    receive(c, "TR-0001", "F1", 500)
+    batch(c, "EW-2026-0001", "GEN-1", "IT", 500, operator="priya-techcorp")
+    dispatch(c, "TR-0001", "EW-2026-0001", "CC-A", 500)        # company -> collector
+    receive(c, "TR-0001", "CC-A", 500)
+    dispatch(c, "TR-0001B", "EW-2026-0001", "TR-1", 500)       # collector -> transporter
+    receive(c, "TR-0001B", "TR-1", 500)
+    dispatch(c, "TR-0001C", "EW-2026-0001", "F1", 500)         # transporter -> recycler
+    receive(c, "TR-0001C", "F1", 500)
     call(c, "POST", "/api/v1/processing-runs", {
         "id": "PR-0001", "batch_id": "EW-2026-0001", "facility_id": "F1",
         "input": {"value": 500, "unit": "kg"},
@@ -118,8 +122,8 @@ with TestClient(app) as c:     # creates tables + seeds facilities
     call(c, "POST", "/api/v1/inventory/counts", {
         "facility_id": "F1", "material": "copper", "counted": {"value": 80, "unit": "kg"},
         "counted_by": "auditor-meera", "method": "platform_scale", "evidence_ref": "Stock count sheet SC-F1-001"})
-    print("      A  EW-2026-0001  clean flow: processed (PASS), copper claimed, costed, reconciled")
-
+    print("      A  EW-2026-0001  full chain TechCorp -> CC-A -> GreenMove -> F1: processed (PASS), "
+          "copper claimed, costed, reconciled")
     # ---------- Scenario B: missing handover ----------
     batch(c, "EW-2026-0002", "CC-A", "TELECOM", 300)
     dispatch(c, "TR-0002", "EW-2026-0002", "F4", 300)
