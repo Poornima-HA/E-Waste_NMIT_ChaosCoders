@@ -37,7 +37,16 @@ def to_grams(value: Decimal, unit: str) -> int:
     return int((value * UNIT_TO_G[unit]).to_integral_value())
 
 
-# ---------- seed (clearly labelled demo data) ----------
+# ---------- seed ----------
+# Recyclers F1, F2, F4: real facilities from the CPCB list of authorised e-waste
+# dismantlers/recyclers (Karnataka section, "as on 08-06-2023"): name, location and
+# authorised capacity in MTA are as published. Accepted categories, licence dates and
+# prices are DEMO ASSUMPTIONS. capacity_g = the daily intake slot used in this pilot,
+# never above authorised MTA / 300 working days. F3 is a simulated facility used only
+# to demonstrate the expired-licence block, so no real company is shown as non-compliant.
+CPCB_SOURCE = "CPCB authorised list (as on 08-06-2023)"
+
+
 def seed(db: Session):
     if db.query(Facility).count():
         return
@@ -46,20 +55,29 @@ def seed(db: Session):
         Facility(id="CC-A", name="Collection Centre A (demo)", kind="collection"),
         Facility(id="CC-B", name="Collection Centre B (demo)", kind="collection"),
         Facility(id="TR-1", name="GreenMove Logistics (demo)", kind="transporter"),
-        Facility(id="F1", name="Recycler Alpha (demo)", kind="processor",
-                 licence_no="DEMO-LIC-001", licence_valid_until=date(2027, 3, 31),
-                 accepted_categories="IT,TELECOM,CONSUMER", capacity_g=1_200_000),
-        Facility(id="F2", name="Recycler Beta (demo)", kind="processor",
-                 licence_no="DEMO-LIC-002", licence_valid_until=date(2027, 6, 30),
-                 accepted_categories="IT,CONSUMER", capacity_g=1_000_000),
-        Facility(id="F3", name="Recycler Gamma (demo, EXPIRED)", kind="processor",
+        Facility(id="F1",
+                 name="Sriram Eco Raksha Computer Services Pvt. Ltd. · Bommasandra, Bengaluru · 360 MTA",
+                 kind="processor", licence_no="CPCB-KA-01", licence_valid_until=date(2027, 3, 31),
+                 accepted_categories="IT,TELECOM,CONSUMER", capacity_g=1_200_000,
+                 verification=CPCB_SOURCE),
+        Facility(id="F2",
+                 name="E-Hasiru · Peenya Industrial Area, Bengaluru · 300 MTA",
+                 kind="processor", licence_no="CPCB-KA-04", licence_valid_until=date(2027, 6, 30),
+                 accepted_categories="IT,CONSUMER", capacity_g=1_000_000,
+                 verification=CPCB_SOURCE),
+        Facility(id="F3", name="Simulated facility · licence EXPIRED (demo only)", kind="processor",
                  licence_no="DEMO-LIC-003", licence_valid_until=date(2026, 9, 30),
-                 accepted_categories="IT,TELECOM,CONSUMER", capacity_g=3_000_000),
-        Facility(id="F4", name="Recycler Delta (demo)", kind="processor",
-                 licence_no="DEMO-LIC-004", licence_valid_until=date(2027, 1, 31),
-                 accepted_categories="TELECOM,CONSUMER", capacity_g=900_000),
+                 accepted_categories="IT,TELECOM,CONSUMER", capacity_g=3_000_000,
+                 verification="Simulated (demo)"),
+        Facility(id="F4",
+                 name="E-Friendly Waste Recyclers · Nayandahalli, Bengaluru · 300 MTA",
+                 kind="processor", licence_no="CPCB-KA-02", licence_valid_until=date(2027, 1, 31),
+                 accepted_categories="TELECOM,CONSUMER", capacity_g=900_000,
+                 verification=CPCB_SOURCE),
     ])
     db.commit()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(engine)

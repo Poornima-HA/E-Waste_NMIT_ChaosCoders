@@ -53,26 +53,34 @@ const groups = [
   },
 ];
 
+const allItems = groups.flatMap((g) => g.items.map((i) => ({ ...i, group: g.title })));
+
+function pageFor(pathname: string) {
+  if (pathname.startsWith("/batches/")) return { label: "Batch Passport", group: "Operate" };
+  const hit = allItems.find((i) => (i.to === "/" ? pathname === "/" : pathname.startsWith(i.to)));
+  return hit ? { label: hit.label, group: hit.group } : { label: "E-Waste Ledger", group: "" };
+}
+
 function Logo() {
   return (
     <svg viewBox="0 0 64 64" className="h-9 w-9 shrink-0" aria-hidden="true">
-      <rect width="64" height="64" rx="14" fill="#1e293b" />
-      <path d="M32 11 L50 21.5 V42.5 L32 53 L14 42.5 V21.5 Z" fill="none" stroke="#34d399" strokeWidth="4" strokeLinejoin="round" />
-      <path d="M23.5 32.5 l6 6 l11.5 -13" fill="none" stroke="#34d399" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <rect width="64" height="64" rx="16" fill="#4f46e5" />
+      <path d="M32 11 L50 21.5 V42.5 L32 53 L14 42.5 V21.5 Z" fill="none" stroke="#ffffff" strokeWidth="4" strokeLinejoin="round" />
+      <path d="M23.5 32.5 l6 6 l11.5 -13" fill="none" stroke="#fbbf24" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 function ChainBadge() {
-  const [s, setS] = useState({ tone: "bg-slate-500", text: "Checking chain…" });
+  const [s, setS] = useState({ tone: "bg-slate-400", text: "Checking chain…" });
 
   useEffect(() => {
     const check = () =>
       api<ChainStatus>("/api/v1/blockchain/status")
         .then((c) =>
           setS(c.public
-            ? { tone: "bg-emerald-400", text: `${c.network} · block ${c.latest_block}` }
-            : { tone: "bg-amber-400", text: `Local demo chain · block ${c.latest_block}` }))
+            ? { tone: "bg-teal-500", text: `${c.network} · block ${c.latest_block}` }
+            : { tone: "bg-amber-500", text: `Local demo chain · block ${c.latest_block}` }))
         .catch(() => setS({ tone: "bg-red-500", text: "Chain offline" }));
     check();
     const t = setInterval(check, 30000);
@@ -80,9 +88,9 @@ function ChainBadge() {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 text-xs text-slate-300">
+    <div className="hidden items-center gap-2 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-slate-600 md:flex">
       <span className={`h-2 w-2 rounded-full ${s.tone}`} />
-      {s.text}
+      <span className="font-mono">{s.text}</span>
     </div>
   );
 }
@@ -96,10 +104,11 @@ function ActorSwitcher() {
   }, []);
 
   return (
-    <div className="border-b border-slate-800 px-4 py-3">
-      <label className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Acting as</label>
+    <label className="flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 py-1 pl-3 pr-1 text-xs font-semibold text-brand-700">
+      <UserCircle size={15} />
+      <span className="hidden sm:inline">Acting as</span>
       <select
-        className="mt-1 w-full rounded-md bg-slate-800 px-2 py-1.5 text-sm text-white"
+        className="max-w-[260px] rounded-full border-0 bg-white px-3 py-1 text-xs font-semibold text-slate-800 shadow-sm outline-none"
         value={cur ?? ""}
         onChange={(e) => setActor(e.target.value || null)}
       >
@@ -108,61 +117,93 @@ function ActorSwitcher() {
           <option key={a.id} value={a.id}>{a.step}. {a.role_label}: {a.name}</option>
         ))}
       </select>
-    </div>
+    </label>
+  );
+}
+
+function Sidebar() {
+  return (
+    <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col border-r border-line bg-white">
+      <div className="flex items-center gap-3 px-5 py-5">
+        <Logo />
+        <div>
+          <div className="text-[15px] font-bold leading-tight text-slate-900">E-Waste Ledger</div>
+          <div className="text-xs text-slate-500">Traceable recovery &amp; audit</div>
+        </div>
+      </div>
+
+      <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-4 pt-2">
+        {groups.map((g) => (
+          <div key={g.title}>
+            <div className="px-3 pb-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              {g.title}
+            </div>
+            <div className="space-y-0.5">
+              {g.items.map(({ to, label, icon: Icon }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === "/"}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                      isActive
+                        ? "bg-brand-50 text-brand-700"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span
+                        className={`flex h-7 w-7 items-center justify-center rounded-md ${
+                          isActive ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-500"
+                        }`}
+                      >
+                        <Icon size={15} />
+                      </span>
+                      {label}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        ))}
+      </nav>
+
+      <div className="border-t border-line p-4 text-[11px] leading-relaxed text-slate-400">
+        Demo data · facilities not government-verified
+      </div>
+    </aside>
+  );
+}
+
+function TopBar() {
+  const { pathname } = useLocation();
+  const page = pageFor(pathname);
+  return (
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-4 border-b border-line bg-white/85 px-6 backdrop-blur">
+      <div className="min-w-0">
+        {page.group && (
+          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{page.group}</div>
+        )}
+        <div className="truncate text-base font-bold text-slate-900">{page.label}</div>
+      </div>
+      <div className="flex items-center gap-3">
+        <ChainBadge />
+        <ActorSwitcher />
+      </div>
+    </header>
   );
 }
 
 function Shell() {
   const location = useLocation();
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900">
-      <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col bg-slate-900 text-slate-300">
-        <div className="flex items-center gap-3 border-b border-slate-800 px-5 py-5">
-          <Logo />
-          <div>
-            <div className="font-semibold leading-tight text-white">E-Waste Ledger</div>
-            <div className="text-xs text-slate-400">Traceable recovery &amp; audit</div>
-          </div>
-        </div>
-
-        <ActorSwitcher />
-
-        <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4">
-          {groups.map((g) => (
-            <div key={g.title}>
-              <div className="px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                {g.title}
-              </div>
-              <div className="space-y-0.5">
-                {g.items.map(({ to, label, icon: Icon }) => (
-                  <NavLink
-                    key={to}
-                    to={to}
-                    end={to === "/"}
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 rounded-md border-l-2 px-3 py-2 text-sm transition ${
-                        isActive
-                          ? "border-emerald-400 bg-slate-800 text-white"
-                          : "border-transparent hover:bg-slate-800/60 hover:text-white"
-                      }`
-                    }
-                  >
-                    <Icon size={16} />
-                    {label}
-                  </NavLink>
-                ))}
-              </div>
-            </div>
-          ))}
-        </nav>
-
-        <div className="space-y-2 border-t border-slate-800 p-4">
-          <ChainBadge />
-          <div className="text-[11px] text-slate-500">Demo data · facilities not government-verified</div>
-        </div>
-      </aside>
-
+    <div className="flex min-h-screen bg-canvas text-slate-900">
+      <Sidebar />
       <main className="min-w-0 flex-1">
+        <TopBar />
         <div key={location.pathname} className="page-enter mx-auto max-w-[1400px]">
           <ErrorBoundary>
             <Routes>
